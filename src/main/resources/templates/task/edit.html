@@ -1,0 +1,14 @@
+<header th:replace="header"></header>
+<div class="container">
+    <h2 th:if="${isEmpty}" class="msg">Задача не существует!</h2>
+    <form th:if="${!isEmpty}" th:action="@{/tasks/update}" method="post" th:object="${task}">
+        <input type="hidden" th:value="${task.id}" name="id">
+        <label for="name">Название задачи:</label>
+        <input type="text" name="name" id="name" th:value="${task.name}">
+        <label for="description">Описание задачи:</label>
+        <textarea name="description" id="description" th:placeholder="${task.description}" rows="5"
+                  cols="33"></textarea>
+        <button type="submit">Сохранить</button>
+    </form>
+</div>
+<footer th:replace="footer"></footer>

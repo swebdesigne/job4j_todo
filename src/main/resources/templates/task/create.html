@@ -1,0 +1,14 @@
+<header th:replace="header"></header>
+<div class="container">
+    <form th:action="@{/tasks/add}" method="post" th:object="${task}">
+        <input type="hidden" value="0" name="id">
+        <label for="name">Название задачи:
+        </label>
+        <input type="text" name="name" id="name">
+        <label for="description">Описание задачи:
+        </label>
+        <textarea name="description" id="description" rows="5"></textarea>
+        <button type="submit">Сохранить</button>
+    </form>
+</div>
+<footer th:replace="footer"></footer>

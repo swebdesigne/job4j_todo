@@ -1,0 +1,164 @@
+#header {
+    background: cadetblue;
+    padding: 20px 0;
+    margin-bottom: 20px;
+    color: yellow;
+    font-size: 32px;
+}
+
+table {
+    width: 100%;
+}
+
+th {
+    padding: 10px;
+    background: cadetblue;
+    color: #ffffff;
+}
+
+td {
+    padding: 10px;
+}
+
+td > p.desc {
+    margin-bottom: 0;
+}
+
+tr:nth-child(odd) {
+    background: lightgray;
+    color: #ffffff;
+}
+
+#add_task {
+    background: coral;
+}
+
+#add_task.active {
+    background: coral;
+    border: 3px solid coral;
+    max-height: unset;
+    box-shadow: inset 0 -3em 3em rgba(0, 0, 0, 0.1),
+    0 0 0 2px rgb(255, 255, 255),
+    0.3em 0.3em 1em rgba(0, 0, 0, 0.3);
+}
+
+.links {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.links div {
+    padding: 10px;
+    margin-top: 10px;
+    margin-right: 3px;
+}
+
+.links a {
+    color: #fff;
+    text-transform: uppercase;
+}
+
+.links a:hover {
+    text-decoration: none;
+}
+
+#all {
+    background: lightblue;
+}
+
+#all,
+#completed,
+#new {
+    max-height: 45px;
+}
+
+#all.active {
+    background: lightblue;
+    border: 3px solid lightblue;
+    max-height: unset;
+    box-shadow: inset 0 -3em 3em rgba(0, 0, 0, 0.1),
+    0 0 0 2px rgb(255, 255, 255),
+    0.3em 0.3em 1em rgba(0, 0, 0, 0.3);
+}
+
+#completed {
+    background: greenyellow;
+}
+
+#completed.active {
+    background: greenyellow;
+    border: 3px solid greenyellow;
+    max-height: unset;
+    box-shadow: inset 0 -3em 3em rgba(0, 0, 0, 0.1),
+    0 0 0 2px rgb(255, 255, 255),
+    0.3em 0.3em 1em rgba(0, 0, 0, 0.3);
+}
+
+#new {
+    background: lightcoral;
+}
+
+#new.active {
+    background: lightcoral;
+    border: 3px solid lightcoral;
+    max-height: unset;
+    box-shadow: inset 0 -3em 3em rgba(0, 0, 0, 0.1),
+    0 0 0 2px rgb(255, 255, 255),
+    0.3em 0.3em 1em rgba(0, 0, 0, 0.3);
+}
+
+form label {
+    display: flex;
+    margin-top: 20px;
+}
+
+input,
+textarea {
+    width: 100%;
+}
+
+.msg {
+    text-align: center;
+    color: red;
+}
+
+button {
+    background: cadetblue;
+    border: none;
+    padding: 5px 10px;
+    color: #fff;
+    margin-top: 20px;
+}
+
+footer {
+    background: #000;
+    padding: 50px;
+    margin-top: 20px;
+}
+
+.footer {
+    text-align: center;
+    color: #ffffff;
+    font-size: 40px;
+}
+
+td.act {
+    text-align: left;
+    padding: 0;
+}
+
+tr:nth-child(odd) a {
+    color: cadetblue;
+}
+
+td a {
+    color: cadetblue;
+    font-size: 18px;
+}
+
+td a:hover {
+    padding: 0;
+    margin: 0;
+    font-size: 20px;
+}
