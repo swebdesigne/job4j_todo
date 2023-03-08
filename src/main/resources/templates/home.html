@@ -1,0 +1,9 @@
+<header th:replace="header"></header>
+    <div class="container home_page">
+        <h4 class="msg">Вы вошли, как незарегистрированный пользователь!</h4>
+        <p>
+            Пожалуйста <a th:href="@{/user/create}"><b>зарегистрируйтесь</b></a>
+            или <a th:href="@{/user/loginPage}"><b>авторизуйтесь</b></a>
+        </p>
+    </div>
+<footer th:replace="footer"></footer>

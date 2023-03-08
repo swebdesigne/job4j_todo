@@ -27,11 +27,33 @@
 </head>
 <body>
 <header id="header">
-    <div class="topLine container">
-        TODO List
+    <div class="container">
+        <div class="nav">
+            <div class="topLine">
+                <a th:href="@{/}">TODO List</a>
+            </div>
+            <div class="login navbar-nav">
+                <div class="authorisation">
+                    <div class="login" th:if="${user.name == 'Гость'}">
+                        <span th:text="${user.name}"></span><span>|</span>
+                        <a class="nav-item nav-link" th:href="@{/user/loginPage}">
+                            <span>Войти</span>
+                            <span>/</span>
+                        </a>
+                        <a class="nav-item nav-link" th:href="@{/user/create}"><span>Регистрация</span></a>
+                    </div>
+                    <div class="logout" th:if="${user.name != 'Гость'}">
+                        <span th:text="${session.user.name}"></span>
+                        <a class="nav-item nav-link" th:href="@{/user/logout}">
+                            <span> | Выйти</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </header>
-<div class="container">
+<div th:if="${user.name != 'Гость'}" class="container">
     <div class="links">
         <a th:href="@{/tasks/all}">
             <div id="all" th:class="${isAll}">Все</div>

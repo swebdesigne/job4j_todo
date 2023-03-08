@@ -1,0 +1,11 @@
+<header th:replace="header"></header>
+<div class="container">
+    <form th:action="@{/user/login}" method="post" th:object="${user}">
+        <label for="login">Логин:</label>
+        <input type="text" id="login" name="login">
+        <label for="userPassword">Введите пароль:</label>
+        <input type="text" id="userPassword" name="password">
+        <button type="submit">Войти</button>
+    </form>
+</div>
+<footer th:replace="footer"></footer>

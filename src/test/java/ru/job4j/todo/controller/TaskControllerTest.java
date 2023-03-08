@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import ru.job4j.todo.model.Task;
 import ru.job4j.todo.service.SimpleTaskService;
 
+import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,10 +19,12 @@ class TaskControllerTest {
     private TaskController taskController;
     private SimpleTaskService simpleTaskService;
     private Model model;
+    private HttpSession session;
 
     @BeforeEach
     public void initPostController() {
         simpleTaskService = mock(SimpleTaskService.class);
+        session = mock(HttpSession.class);
         model = mock(Model.class);
         taskController = new TaskController(simpleTaskService);
     }
@@ -45,7 +48,7 @@ class TaskControllerTest {
                 )
         );
         when(simpleTaskService.findAll()).thenReturn(tasks);
-        String page = taskController.allTask(model);
+        String page = taskController.allTask(model, session);
         verify(model).addAttribute("tasks", simpleTaskService.findAll());
         assertThat(page, is("task/all"));
     }
@@ -69,7 +72,7 @@ class TaskControllerTest {
                 )
         );
         when(simpleTaskService.getCompleted(true)).thenReturn(tasks);
-        String page = taskController.completedTask(model);
+        String page = taskController.completedTask(model, session);
         verify(model).addAttribute("tasks", simpleTaskService.getCompleted(true));
         assertThat(page, is("task/all"));
     }
@@ -93,7 +96,7 @@ class TaskControllerTest {
                 )
         );
         when(simpleTaskService.getNew(false)).thenReturn(tasks);
-        String page = taskController.newTask(model);
+        String page = taskController.newTask(model, session);
         verify(model).addAttribute("tasks", simpleTaskService.getNew(false));
         assertThat(page, is("task/all"));
     }
@@ -139,7 +142,7 @@ class TaskControllerTest {
     @Test
     public void whenDeleteTaskSuccessful() {
         when(simpleTaskService.delete(1)).thenReturn(true);
-        String page = taskController.deleteTask(model, 1);
+        String page = taskController.deleteTask(model, 1, session);
         verify(simpleTaskService).delete(1);
         assertThat(page, is("redirect:/tasks/all"));
     }
@@ -147,7 +150,7 @@ class TaskControllerTest {
     @Test
     public void whenDeleteTaskNotSuccessful() {
         when(simpleTaskService.delete(1)).thenReturn(false);
-        String page = taskController.deleteTask(model, 1);
+        String page = taskController.deleteTask(model, 1, session);
         verify(simpleTaskService).delete(1);
         assertThat(page, is("task/error"));
     }
@@ -155,7 +158,7 @@ class TaskControllerTest {
     @Test
     public void whenCompleteTaskSuccessful() {
         when(simpleTaskService.complete(1)).thenReturn(true);
-        String page = taskController.completeTask(model, 1);
+        String page = taskController.completeTask(model, 1, session);
         verify(simpleTaskService).complete(1);
         assertThat(page, is("redirect:/tasks/all"));
     }
@@ -163,7 +166,7 @@ class TaskControllerTest {
     @Test
     public void whenCompleteTaskNotSuccessful() {
         when(simpleTaskService.complete(1)).thenReturn(false);
-        String page = taskController.completeTask(model, 1);
+        String page = taskController.completeTask(model, 1, session);
         verify(simpleTaskService).complete(1);
         assertThat(page, is("task/error"));
     }

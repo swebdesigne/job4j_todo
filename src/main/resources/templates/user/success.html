@@ -1,0 +1,8 @@
+<header th:replace="header"></header>
+<div class="container">
+    <div class="success">Полозователь <b th:text="${user.getName}"></b> (Login: <b th:text="${user.getLogin}"></b>)
+        успешно зарегистрипован!
+        <p><a th:href="@{/tasks/all}" class="showAllTasks"><span>Перейти к списку задач</span></a></p>
+    </div>
+</div>
+<footer th:replace="footer"></footer>

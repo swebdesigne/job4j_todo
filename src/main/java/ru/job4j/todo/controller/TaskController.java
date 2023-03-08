@@ -8,7 +8,9 @@ import ru.job4j.todo.model.Task;
 import ru.job4j.todo.service.SimpleTaskService;
 import ru.job4j.todo.utils.TaskActionStatus;
 import ru.job4j.todo.utils.TaskStatus;
+import ru.job4j.todo.utils.UserHttpSessionUtil;
 
+import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
 @ThreadSafe
@@ -22,7 +24,8 @@ public class TaskController {
     }
 
     @GetMapping("/all")
-    public String allTask(Model model) {
+    public String allTask(Model model, HttpSession session) {
+        model.addAttribute("user", UserHttpSessionUtil.getUser(session));
         model.addAttribute("msgError", TaskStatus.NO_TASK.getStatus());
         model.addAttribute("isAll", "active");
         model.addAttribute("tasks", simpleTaskService.findAll());
@@ -30,7 +33,8 @@ public class TaskController {
     }
 
     @GetMapping("/completed")
-    public String completedTask(Model model) {
+    public String completedTask(Model model, HttpSession session) {
+        model.addAttribute("user", UserHttpSessionUtil.getUser(session));
         model.addAttribute("msgError", TaskStatus.NO_COMPLETED_TASK.getStatus());
         model.addAttribute("isCompleted", "active");
         model.addAttribute("tasks", simpleTaskService.getCompleted(true));
@@ -38,7 +42,8 @@ public class TaskController {
     }
 
     @GetMapping("/new")
-    public String newTask(Model model) {
+    public String newTask(Model model, HttpSession session) {
+        model.addAttribute("user", UserHttpSessionUtil.getUser(session));
         model.addAttribute("msgError", TaskStatus.NO_NEW_TASK.getStatus());
         model.addAttribute("isNew", "active");
         model.addAttribute("tasks", simpleTaskService.getNew(false));
@@ -46,7 +51,8 @@ public class TaskController {
     }
 
     @GetMapping("/info/{id}")
-    public String taskInfo(Model model, @PathVariable("id") int id) {
+    public String taskInfo(Model model, @PathVariable("id") int id, HttpSession session) {
+        model.addAttribute("user", UserHttpSessionUtil.getUser(session));
         Optional<Task> opt = simpleTaskService.getById(id);
         model.addAttribute("isEmpty", opt.isEmpty());
         opt.ifPresent(task -> model.addAttribute("task", task));
@@ -54,7 +60,8 @@ public class TaskController {
     }
 
     @GetMapping("/edit/{id}")
-    public String editTask(Model model, @PathVariable("id") int id) {
+    public String editTask(Model model, @PathVariable("id") int id, HttpSession session) {
+        model.addAttribute("user", UserHttpSessionUtil.getUser(session));
         Optional<Task> opt = simpleTaskService.getById(id);
         model.addAttribute("isEmpty", opt.isEmpty());
         opt.ifPresent(task -> model.addAttribute("task", task));
@@ -71,7 +78,8 @@ public class TaskController {
     }
 
     @GetMapping("/create")
-    public String createTask() {
+    public String createTask(Model model, HttpSession session) {
+        model.addAttribute("user", UserHttpSessionUtil.getUser(session));
         return "task/create";
     }
 
@@ -82,7 +90,8 @@ public class TaskController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteTask(Model model, @PathVariable("id") int id) {
+    public String deleteTask(Model model, @PathVariable("id") int id, HttpSession session) {
+        model.addAttribute("user", UserHttpSessionUtil.getUser(session));
         if (!simpleTaskService.delete(id)) {
             model.addAttribute("msgError", TaskActionStatus.NOT_DELETE.getStatus());
             return "task/error";
@@ -91,7 +100,8 @@ public class TaskController {
     }
 
     @GetMapping("/complete/{id}")
-    public String completeTask(Model model, @PathVariable("id") int id) {
+    public String completeTask(Model model, @PathVariable("id") int id, HttpSession session) {
+        model.addAttribute("user", UserHttpSessionUtil.getUser(session));
         if (!simpleTaskService.complete(id)) {
             model.addAttribute("msgError", TaskActionStatus.NOT_COMPLETE.getStatus());
             return "task/error";
