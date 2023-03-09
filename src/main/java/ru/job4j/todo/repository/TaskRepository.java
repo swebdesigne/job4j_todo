@@ -12,5 +12,4 @@ public interface TaskRepository {
     Optional<Task> getById(int id);
     boolean delete(int id);
     List<Task> findByStatus(boolean status);
-    boolean complete(int id);
 }

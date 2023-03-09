@@ -19,6 +19,4 @@ public interface TaskService {
      void add(Task task);
 
      boolean delete(int id);
-
-     boolean complete(int id);
 }

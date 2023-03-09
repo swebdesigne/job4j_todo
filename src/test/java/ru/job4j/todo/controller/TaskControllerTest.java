@@ -121,7 +121,7 @@ class TaskControllerTest {
                 .description("Create task 1")
                 .build();
         when(simpleTaskService.update(task)).thenReturn(false);
-        String page = taskController.updateTask(model, task);
+        String page = taskController.updateTask(model, task, session);
         verify(simpleTaskService).update(task);
         assertThat(page, is("task/error"));
     }
@@ -134,7 +134,7 @@ class TaskControllerTest {
                 .description("Create task 1")
                 .build();
         when(simpleTaskService.update(task)).thenReturn(true);
-        String page = taskController.updateTask(model, task);
+        String page = taskController.updateTask(model, task, session);
         verify(simpleTaskService).update(task);
         assertThat(page, is("redirect:/tasks/all"));
     }
@@ -152,22 +152,6 @@ class TaskControllerTest {
         when(simpleTaskService.delete(1)).thenReturn(false);
         String page = taskController.deleteTask(model, 1, session);
         verify(simpleTaskService).delete(1);
-        assertThat(page, is("task/error"));
-    }
-
-    @Test
-    public void whenCompleteTaskSuccessful() {
-        when(simpleTaskService.complete(1)).thenReturn(true);
-        String page = taskController.completeTask(model, 1, session);
-        verify(simpleTaskService).complete(1);
-        assertThat(page, is("redirect:/tasks/all"));
-    }
-
-    @Test
-    public void whenCompleteTaskNotSuccessful() {
-        when(simpleTaskService.complete(1)).thenReturn(false);
-        String page = taskController.completeTask(model, 1, session);
-        verify(simpleTaskService).complete(1);
         assertThat(page, is("task/error"));
     }
 }

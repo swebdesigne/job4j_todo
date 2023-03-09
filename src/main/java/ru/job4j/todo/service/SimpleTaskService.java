@@ -1,5 +1,6 @@
 package ru.job4j.todo.service;
 
+import lombok.AllArgsConstructor;
 import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Service;
 import ru.job4j.todo.model.Task;
@@ -10,12 +11,10 @@ import java.util.Optional;
 
 @ThreadSafe
 @Service
+@AllArgsConstructor
 public class SimpleTaskService implements TaskService {
     private final HibernateTaskRepository hibernateTaskRepository;
 
-    SimpleTaskService(HibernateTaskRepository hibernateTaskRepository) {
-        this.hibernateTaskRepository = hibernateTaskRepository;
-    }
 
     @Override
     public List<Task> findAll() {
@@ -50,10 +49,5 @@ public class SimpleTaskService implements TaskService {
     @Override
     public boolean delete(int id) {
         return hibernateTaskRepository.delete(id);
-    }
-
-    @Override
-    public boolean complete(int id) {
-        return hibernateTaskRepository.complete(id);
     }
 }

@@ -1,5 +1,6 @@
 package ru.job4j.todo.controller;
 
+import lombok.AllArgsConstructor;
 import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,13 +16,10 @@ import java.util.Optional;
 
 @ThreadSafe
 @Controller
+@AllArgsConstructor
 @RequestMapping("/tasks")
 public class TaskController {
     private final SimpleTaskService simpleTaskService;
-
-    public TaskController(SimpleTaskService simpleTaskService) {
-        this.simpleTaskService = simpleTaskService;
-    }
 
     @GetMapping("/all")
     public String allTask(Model model, HttpSession session) {
@@ -69,8 +67,9 @@ public class TaskController {
     }
 
     @PostMapping("/update")
-    public String updateTask(Model model, @ModelAttribute Task task) {
+    public String updateTask(Model model, @ModelAttribute Task task, HttpSession session) {
         if (!simpleTaskService.update(task)) {
+            model.addAttribute("user", UserHttpSessionUtil.getUser(session));
             model.addAttribute("msgError", TaskActionStatus.NOT_UPDATE.getStatus());
             return "task/error";
         }
@@ -91,8 +90,8 @@ public class TaskController {
 
     @GetMapping("/delete/{id}")
     public String deleteTask(Model model, @PathVariable("id") int id, HttpSession session) {
-        model.addAttribute("user", UserHttpSessionUtil.getUser(session));
         if (!simpleTaskService.delete(id)) {
+            model.addAttribute("user", UserHttpSessionUtil.getUser(session));
             model.addAttribute("msgError", TaskActionStatus.NOT_DELETE.getStatus());
             return "task/error";
         }
@@ -101,8 +100,11 @@ public class TaskController {
 
     @GetMapping("/complete/{id}")
     public String completeTask(Model model, @PathVariable("id") int id, HttpSession session) {
-        model.addAttribute("user", UserHttpSessionUtil.getUser(session));
-        if (!simpleTaskService.complete(id)) {
+        var taskOptional = simpleTaskService.getById(id);
+        taskOptional.ifPresent(task -> task.setDone(true));
+        var isUpdate = taskOptional.isPresent() && simpleTaskService.update(taskOptional.get());
+        if (!isUpdate) {
+            model.addAttribute("user", UserHttpSessionUtil.getUser(session));
             model.addAttribute("msgError", TaskActionStatus.NOT_COMPLETE.getStatus());
             return "task/error";
         }
