@@ -6,6 +6,7 @@
             <th width="1">№</th>
             <th width="20%">Название задания</th>
             <th width="20%">Дата создания</th>
+            <th width="20%">Пользователь</th>
             <th>Статус</th>
             <th></th>
         </tr>
@@ -13,12 +14,14 @@
             <td th:text="${custStat.count} + ."></td>
             <td th:text="${task.name}"></td>
             <td th:text="${#temporals.format(task.created, 'dd.MM.yyyy')}"></td>
+            <td th:text="${task.user.name}"></td>
             <td>
                 <span th:if="${task.done}">Выполнено</span>
                 <span th:unless="${task.done}">Не выполнено</span>
             </td>
-            <td class="act"><a th:href="@{|/tasks/info/${task.id}|}"><i class="fa fa-eye" aria-hidden="true"></i>
-            </a></td>
+            <td class="act">
+                <a th:href="@{|/tasks/info/${task.id}|}"><i class="fa fa-eye" aria-hidden="true"></i></a>
+            </td>
         </tr>
     </table>
 </div>

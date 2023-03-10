@@ -108,7 +108,7 @@ class TaskControllerTest {
                 .name("Task 1")
                 .description("Create task 1")
                 .build();
-        String page = taskController.addTask(task);
+        String page = taskController.addTask(task, session);
         verify(simpleTaskService).add(task);
         assertThat(page, is("redirect:/tasks/all"));
     }

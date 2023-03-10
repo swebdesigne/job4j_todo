@@ -68,8 +68,10 @@ public class TaskController {
 
     @PostMapping("/update")
     public String updateTask(Model model, @ModelAttribute Task task, HttpSession session) {
+        var user = UserHttpSessionUtil.getUser(session);
+        task.setUser(user);
         if (!simpleTaskService.update(task)) {
-            model.addAttribute("user", UserHttpSessionUtil.getUser(session));
+            model.addAttribute("user", user);
             model.addAttribute("msgError", TaskActionStatus.NOT_UPDATE.getStatus());
             return "task/error";
         }
@@ -83,7 +85,8 @@ public class TaskController {
     }
 
     @PostMapping("/add")
-    public String addTask(@ModelAttribute Task task) {
+    public String addTask(@ModelAttribute Task task, HttpSession session) {
+        task.setUser(UserHttpSessionUtil.getUser(session));
         simpleTaskService.add(task);
         return "redirect:/tasks/all";
     }

@@ -22,7 +22,21 @@ public class Task {
     private LocalDateTime created = LocalDateTime.now();
     private boolean done;
 
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     public Task() {
+    }
+
+    public Task(int id, String name, String description, LocalDateTime created, boolean done, User user) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.created = created;
+        this.done = done;
+        this.user = user;
     }
 
     public Task(int id, String name, String description, LocalDateTime created, boolean done) {
