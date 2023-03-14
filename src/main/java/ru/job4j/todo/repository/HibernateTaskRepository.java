@@ -2,7 +2,6 @@ package ru.job4j.todo.repository;
 
 import lombok.AllArgsConstructor;
 import net.jcip.annotations.ThreadSafe;
-import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 import ru.job4j.todo.model.Task;
 
@@ -14,12 +13,11 @@ import java.util.Optional;
 @Repository
 @AllArgsConstructor
 public class HibernateTaskRepository implements TaskRepository {
-    private SessionFactory sessionFactory;
     private final CrudRepository crudRepository;
-    private final static String FIND_ALL = "from Task";
+    private final static String FIND_ALL = "FROM Task f JOIN FETCH f.priority ORDER BY f.priority.position";
     private static final String DELETE = "DELETE Task WHERE id = :fId";
-    private static final String GET_BY_ID = "from Task WHERE id = :fId";
-    private static final String FIND_BY_STATUS = "FROM Task WHERE done = :fDone";
+    private static final String GET_BY_ID = "FROM Task f JOIN FETCH f.priority WHERE f.id = :fId";
+    private static final String FIND_BY_STATUS = "FROM Task f JOIN FETCH f.priority WHERE done = :fDone";
 
     @Override
     public void add(Task task) {

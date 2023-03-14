@@ -8,6 +8,10 @@
         <label for="description">Описание задачи:</label>
         <textarea name="description" id="description" th:placeholder="${task.description}" rows="5"
                   cols="33"></textarea>
+        <label for="priority.id">Приоритет:</label>
+        <select class="form-control" id="priority.id" name="priority.id" th:field="*{priority.id}">
+            <option th:each="priority : ${priorities}" th:value="${priority.id}" th:text="${priority.name}"></option>
+        </select>
         <button type="submit">Сохранить</button>
     </form>
 </div>

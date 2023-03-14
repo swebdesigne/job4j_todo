@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.ui.Model;
 import ru.job4j.todo.model.Task;
+import ru.job4j.todo.service.SimplePriorityService;
 import ru.job4j.todo.service.SimpleTaskService;
 
 import javax.servlet.http.HttpSession;
@@ -18,6 +19,7 @@ import static org.mockito.Mockito.*;
 class TaskControllerTest {
     private TaskController taskController;
     private SimpleTaskService simpleTaskService;
+    private SimplePriorityService simplePriorityService;
     private Model model;
     private HttpSession session;
 
@@ -26,7 +28,7 @@ class TaskControllerTest {
         simpleTaskService = mock(SimpleTaskService.class);
         session = mock(HttpSession.class);
         model = mock(Model.class);
-        taskController = new TaskController(simpleTaskService);
+        taskController = new TaskController(simpleTaskService, simplePriorityService);
     }
 
     @Test

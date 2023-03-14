@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.todo.model.Task;
+import ru.job4j.todo.service.SimplePriorityService;
 import ru.job4j.todo.service.SimpleTaskService;
 import ru.job4j.todo.utils.TaskActionStatus;
 import ru.job4j.todo.utils.TaskStatus;
@@ -20,6 +21,7 @@ import java.util.Optional;
 @RequestMapping("/tasks")
 public class TaskController {
     private final SimpleTaskService simpleTaskService;
+    private final SimplePriorityService simplePriorityService;
 
     @GetMapping("/all")
     public String allTask(Model model, HttpSession session) {
@@ -63,6 +65,7 @@ public class TaskController {
         Optional<Task> opt = simpleTaskService.getById(id);
         model.addAttribute("isEmpty", opt.isEmpty());
         opt.ifPresent(task -> model.addAttribute("task", task));
+        model.addAttribute("priorities", simplePriorityService.findAll());
         return "task/edit";
     }
 
@@ -81,6 +84,7 @@ public class TaskController {
     @GetMapping("/create")
     public String createTask(Model model, HttpSession session) {
         model.addAttribute("user", UserHttpSessionUtil.getUser(session));
+        model.addAttribute("priorities", simplePriorityService.findAll());
         return "task/create";
     }
 
