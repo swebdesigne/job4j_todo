@@ -14,10 +14,10 @@ import java.util.Optional;
 @AllArgsConstructor
 public class HibernateTaskRepository implements TaskRepository {
     private final CrudRepository crudRepository;
-    private final static String FIND_ALL = "FROM Task f JOIN FETCH f.priority ORDER BY f.priority.position";
+    private final static String FIND_ALL = "FROM Task f JOIN FETCH f.priority JOIN FETCH f.user ORDER BY f.done ASC";
     private static final String DELETE = "DELETE Task WHERE id = :fId";
-    private static final String GET_BY_ID = "FROM Task f JOIN FETCH f.priority WHERE f.id = :fId";
-    private static final String FIND_BY_STATUS = "FROM Task f JOIN FETCH f.priority WHERE done = :fDone";
+    private static final String GET_BY_ID = "FROM Task f JOIN FETCH f.priority JOIN FETCH f.user JOIN FETCH f.categories WHERE f.id = :fId";
+    private static final String FIND_BY_STATUS = "FROM Task f JOIN FETCH f.priority JOIN FETCH f.user WHERE f.done = :fDone";
 
     @Override
     public void add(Task task) {

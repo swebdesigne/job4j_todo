@@ -18,7 +18,8 @@ public class SimpleUserService implements UserService {
 
     @Override
     public Optional<User> add(User user) {
-        return hibernateUserRepository.add(user);
+        hibernateUserRepository.add(user);
+        return hibernateUserRepository.findByLoginAndPassword(user);
     }
 
     @Override

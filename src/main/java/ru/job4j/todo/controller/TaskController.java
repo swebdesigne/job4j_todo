@@ -7,13 +7,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.todo.model.Task;
 import ru.job4j.todo.service.SimplePriorityService;
+import ru.job4j.todo.service.SimpleTaskCategory;
 import ru.job4j.todo.service.SimpleTaskService;
 import ru.job4j.todo.utils.TaskActionStatus;
 import ru.job4j.todo.utils.TaskStatus;
 import ru.job4j.todo.utils.UserHttpSessionUtil;
 
 import javax.servlet.http.HttpSession;
-import java.util.Optional;
+import java.util.List;
 
 @ThreadSafe
 @Controller
@@ -22,6 +23,7 @@ import java.util.Optional;
 public class TaskController {
     private final SimpleTaskService simpleTaskService;
     private final SimplePriorityService simplePriorityService;
+    private final SimpleTaskCategory simpleTaskCategory;
 
     @GetMapping("/all")
     public String allTask(Model model, HttpSession session) {
@@ -53,7 +55,7 @@ public class TaskController {
     @GetMapping("/info/{id}")
     public String taskInfo(Model model, @PathVariable("id") int id, HttpSession session) {
         model.addAttribute("user", UserHttpSessionUtil.getUser(session));
-        Optional<Task> opt = simpleTaskService.getById(id);
+        var opt = simpleTaskService.getById(id);
         model.addAttribute("isEmpty", opt.isEmpty());
         opt.ifPresent(task -> model.addAttribute("task", task));
         return "task/info";
@@ -62,18 +64,23 @@ public class TaskController {
     @GetMapping("/edit/{id}")
     public String editTask(Model model, @PathVariable("id") int id, HttpSession session) {
         model.addAttribute("user", UserHttpSessionUtil.getUser(session));
-        Optional<Task> opt = simpleTaskService.getById(id);
+        var opt = simpleTaskService.getById(id);
         model.addAttribute("isEmpty", opt.isEmpty());
         opt.ifPresent(task -> model.addAttribute("task", task));
         model.addAttribute("priorities", simplePriorityService.findAll());
+        model.addAttribute("categories", simpleTaskCategory.findAll());
         return "task/edit";
     }
 
     @PostMapping("/update")
-    public String updateTask(Model model, @ModelAttribute Task task, HttpSession session) {
+    public String updateTask(Model model,
+                             @ModelAttribute Task task,
+                             HttpSession session,
+                             @RequestParam("category.id") List<Integer> categoriesIDS
+    ) {
         var user = UserHttpSessionUtil.getUser(session);
         task.setUser(user);
-        if (!simpleTaskService.update(task)) {
+        if (!simpleTaskService.update(task, categoriesIDS)) {
             model.addAttribute("user", user);
             model.addAttribute("msgError", TaskActionStatus.NOT_UPDATE.getStatus());
             return "task/error";
@@ -85,13 +92,16 @@ public class TaskController {
     public String createTask(Model model, HttpSession session) {
         model.addAttribute("user", UserHttpSessionUtil.getUser(session));
         model.addAttribute("priorities", simplePriorityService.findAll());
+        model.addAttribute("categories", simpleTaskCategory.findAll());
         return "task/create";
     }
 
     @PostMapping("/add")
-    public String addTask(@ModelAttribute Task task, HttpSession session) {
+    public String addTask(@ModelAttribute Task task, HttpSession session,
+                          @RequestParam("category.id") List<Integer> categoriesIDS
+    ) {
         task.setUser(UserHttpSessionUtil.getUser(session));
-        simpleTaskService.add(task);
+        simpleTaskService.add(task, categoriesIDS);
         return "redirect:/tasks/all";
     }
 

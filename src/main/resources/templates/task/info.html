@@ -5,7 +5,8 @@
         <tr>
             <th width="1">№</th>
             <th width="20%">Название задания</th>
-            <th width="20%">Описание</th>
+            <th width="15%">Описание</th>
+            <th width="15%">Категория</th>
             <th width="15%">Дата создания</th>
             <th width="15%">Статус</th>
             <th width="15%">Приоритет</th>
@@ -21,13 +22,17 @@
                     <span th:text="${t} + ';'"></span>
                 </p>
             </td>
+            <td>
+                <p th:each="cat : ${task.categories}" th:text="${cat.name}"></p>
+            </td>
             <td th:text="${#temporals.format(task.created, 'dd.MM.yyyy')}">25 февраля 2023</td>
             <td>
                 <span th:if="${task.done}">Выполнено</span>
                 <span th:unless="${task.done}">Не выполнено</span>
             </td>
             <td th:text="${task.priority.name}"></td>
-            <td class="act"><a th:if="${!task.done}" th:href="@{|/tasks/complete/${task.id}|}"><i class="fa fa-list" aria-hidden="true"></i>
+            <td class="act"><a th:if="${!task.done}" th:href="@{|/tasks/complete/${task.id}|}"><i class="fa fa-list"
+                                                                                                  aria-hidden="true"></i>
             </a></td>
             <td class="act"><a th:href="@{|/tasks/edit/${task.id}|}"><i class="fa fa-pencil" aria-hidden="true"></i>
             </a></td>

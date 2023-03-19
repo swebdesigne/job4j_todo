@@ -1,17 +1,19 @@
 package ru.job4j.todo.model;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "tasks")
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,30 +26,17 @@ public class Task {
     private boolean done;
 
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "priority_id")
     private Priority priority;
-
-    public Task() {
-    }
-
-    public Task(int id, String name, String description, LocalDateTime created, boolean done, User user, Priority priority) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.created = created;
-        this.done = done;
-        this.user = user;
-    }
-
-    public Task(int id, String name, String description, LocalDateTime created, boolean done, Priority priority) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.created = created;
-        this.done = done;
-    }
+    @ManyToMany
+    @JoinTable(
+            name = "task_category",
+            joinColumns = {@JoinColumn(name = "task_id")},
+            inverseJoinColumns = {@JoinColumn(name = "category_id")}
+    )
+    private List<Category> categories = new ArrayList<>();
 }

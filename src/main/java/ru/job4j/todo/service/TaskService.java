@@ -6,17 +6,19 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TaskService {
-     List<Task> findAll();
+    List<Task> findAll();
 
-     List<Task> getCompleted(boolean status);
+    List<Task> getCompleted(boolean status);
 
-     List<Task> getNew(boolean status);
+    List<Task> getNew(boolean status);
 
-     Optional<Task> getById(int id);
+    Optional<Task> getById(int id);
 
-     boolean update(Task task);
+    boolean update(Task task, List<Integer> ids);
 
-     void add(Task task);
+    boolean update(Task task);
 
-     boolean delete(int id);
+    void add(Task task, List<Integer> ids);
+
+    boolean delete(int id);
 }

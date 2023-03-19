@@ -5,8 +5,11 @@
         <label for="name">Название задачи:
         </label>
         <input type="text" name="name" id="name">
-        <label for="description">Описание задачи:
-        </label>
+        <label for="category">Категории:</label>
+        <select class="form-control" id="category" name="category.id" multiple>
+            <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+        </select>
+        <label for="description">Описание задачи:</label>
         <textarea name="description" id="description" rows="5"></textarea>
         <label for="priority.id">Приоритет:</label>
         <select class="form-control" id="priority.id" name="priority.id">

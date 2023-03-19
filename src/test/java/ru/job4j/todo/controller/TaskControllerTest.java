@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.ui.Model;
 import ru.job4j.todo.model.Task;
 import ru.job4j.todo.service.SimplePriorityService;
+import ru.job4j.todo.service.SimpleTaskCategory;
 import ru.job4j.todo.service.SimpleTaskService;
 
 import javax.servlet.http.HttpSession;
@@ -20,6 +21,10 @@ class TaskControllerTest {
     private TaskController taskController;
     private SimpleTaskService simpleTaskService;
     private SimplePriorityService simplePriorityService;
+    private SimpleTaskCategory simpleTaskCategory;
+    private final List<Integer> categoriesIDS = List.of(1, 2);
+
+
     private Model model;
     private HttpSession session;
 
@@ -28,7 +33,7 @@ class TaskControllerTest {
         simpleTaskService = mock(SimpleTaskService.class);
         session = mock(HttpSession.class);
         model = mock(Model.class);
-        taskController = new TaskController(simpleTaskService, simplePriorityService);
+        taskController = new TaskController(simpleTaskService, simplePriorityService, simpleTaskCategory);
     }
 
     @Test
@@ -110,8 +115,8 @@ class TaskControllerTest {
                 .name("Task 1")
                 .description("Create task 1")
                 .build();
-        String page = taskController.addTask(task, session);
-        verify(simpleTaskService).add(task);
+        String page = taskController.addTask(task, session, categoriesIDS);
+        verify(simpleTaskService).add(task, categoriesIDS);
         assertThat(page, is("redirect:/tasks/all"));
     }
 
@@ -122,9 +127,9 @@ class TaskControllerTest {
                 .name("Task 1")
                 .description("Create task 1")
                 .build();
-        when(simpleTaskService.update(task)).thenReturn(false);
-        String page = taskController.updateTask(model, task, session);
-        verify(simpleTaskService).update(task);
+        when(simpleTaskService.update(task, categoriesIDS)).thenReturn(false);
+        String page = taskController.updateTask(model, task, session, categoriesIDS);
+        verify(simpleTaskService).update(task, categoriesIDS);
         assertThat(page, is("task/error"));
     }
 
@@ -135,9 +140,9 @@ class TaskControllerTest {
                 .name("Task 1")
                 .description("Create task 1")
                 .build();
-        when(simpleTaskService.update(task)).thenReturn(true);
-        String page = taskController.updateTask(model, task, session);
-        verify(simpleTaskService).update(task);
+        when(simpleTaskService.update(task, categoriesIDS)).thenReturn(true);
+        String page = taskController.updateTask(model, task, session, categoriesIDS);
+        verify(simpleTaskService).update(task, categoriesIDS);
         assertThat(page, is("redirect:/tasks/all"));
     }
 

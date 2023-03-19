@@ -14,6 +14,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class SimpleTaskService implements TaskService {
     private final HibernateTaskRepository hibernateTaskRepository;
+    private final SimpleTaskCategory simpleTaskCategory;
 
 
     @Override
@@ -37,12 +38,19 @@ public class SimpleTaskService implements TaskService {
     }
 
     @Override
+    public boolean update(Task task, List<Integer> ids) {
+        task.setCategories(simpleTaskCategory.findByIDS(ids));
+        return hibernateTaskRepository.update(task);
+    }
+
+    @Override
     public boolean update(Task task) {
         return hibernateTaskRepository.update(task);
     }
 
     @Override
-    public void add(Task task) {
+    public void add(Task task, List<Integer> ids) {
+        task.setCategories(simpleTaskCategory.findByIDS(ids));
         hibernateTaskRepository.add(task);
     }
 
