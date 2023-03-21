@@ -14,7 +14,7 @@ import ru.job4j.todo.utils.UserStatus;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.Optional;
+import java.util.*;
 
 @ThreadSafe
 @Controller
@@ -29,6 +29,11 @@ public class UserController {
     @GetMapping("/create")
     public String create(Model model, HttpSession session) {
         model.addAttribute("user", UserHttpSessionUtil.getUser(session));
+        var zones = new ArrayList<TimeZone>();
+        for (String timeId : TimeZone.getAvailableIDs()) {
+            zones.add(TimeZone.getTimeZone(timeId));
+        }
+        model.addAttribute("zones", zones);
         return "user/create";
     }
 

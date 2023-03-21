@@ -6,6 +6,10 @@
         <input type="text" name="name" id="userName">
         <label for="userLogin">Логин:</label>
         <input type="text" name="login" id="userLogin">
+        <label for="timezone">Часовой пояс:</label>
+        <select class="form-control" name="timezone" id="timezone">
+            <option th:each="zone : ${zones}" th:value="${zone.getID}" th:text="${zone.getDisplayName}"></option>
+        </select>
         <label for="userPassword">Пароль</label>
         <input type="text" name="password" id="userPassword">
         <button type="submit">Регистрация</button>

@@ -5,6 +5,7 @@ import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Service;
 import ru.job4j.todo.model.Task;
 import ru.job4j.todo.repository.HibernateTaskRepository;
+import ru.job4j.todo.utils.TaskTimezoneSetter;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,22 +20,30 @@ public class SimpleTaskService implements TaskService {
 
     @Override
     public List<Task> findAll() {
-        return hibernateTaskRepository.findAll();
+        var tasks = hibernateTaskRepository.findAll();
+        tasks.forEach(TaskTimezoneSetter::setTimezone);
+        return tasks;
     }
 
     @Override
     public List<Task> getCompleted(boolean status) {
-        return hibernateTaskRepository.findByStatus(status);
+        var tasks = hibernateTaskRepository.findByStatus(status);
+        tasks.forEach(TaskTimezoneSetter::setTimezone);
+        return tasks;
     }
 
     @Override
     public List<Task> getNew(boolean status) {
-        return hibernateTaskRepository.findByStatus(status);
+        var tasks = hibernateTaskRepository.findByStatus(status);
+        tasks.forEach(TaskTimezoneSetter::setTimezone);
+        return tasks;
     }
 
     @Override
     public Optional<Task> getById(int id) {
-        return hibernateTaskRepository.getById(id);
+        var task = hibernateTaskRepository.getById(id);
+        task.ifPresent(TaskTimezoneSetter::setTimezone);
+        return task;
     }
 
     @Override
